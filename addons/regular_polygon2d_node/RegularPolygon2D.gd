@@ -158,7 +158,7 @@ func polygon_points_get():	# mine
 	return polygon_pts
 	
 # Both of the following are mine adapted from https://godotengine.org/qa/24745/how-to-check-type-of-a-custom-class
-func is_class(type): return type == "RegularPolygon2D" or .is_type(type)
+func is_class(type): return type == "RegularPolygon2D"
 func get_class(): return "RegularPolygon2D"
 
 # Called when the node enters the scene tree for the first time.
