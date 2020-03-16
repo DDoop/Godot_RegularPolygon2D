@@ -45,6 +45,7 @@ func poly_pts(p_size):
 	vlog("off: ", off)
 	for i in range(num_sides):
 		pts.append(off + polar2cartesian(p_size, deg2rad(-90+polygon_rotation) + i*th))
+	polygon_points_set(pts)
 	return pts
 
 func draw_poly(p_size, p_color, p_texture):
