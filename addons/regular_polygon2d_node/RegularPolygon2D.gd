@@ -1,5 +1,7 @@
 tool
 extends Node2D
+class_name RegularPolygon2D
+
 
 export(bool) var centered setget centered_set, centered_get
 # export(bool) var axis_snap setget axis_snap_set, axis_snap_get
@@ -13,6 +15,8 @@ export(float) var border_size = 4 setget border_size_set, border_size_get
 export(Color) var border_color = Color(0,0,0) setget border_color_set, border_color_get
 
 export(float, -360, 360) var polygon_rotation setget polygon_rotation_set, polygon_rotation_get
+
+export(PoolVector2Array) var polygon_pts = [] setget polygon_points_set, polygon_points_get # mine and damn do i feel slick. first export() ever
 
 # Configure a collision shape if the parent is a CollisionObject2D.
 # e.g. KinematicBody2D, RigidyBody2D, Area2D, or StaticBody2D
@@ -45,6 +49,8 @@ func poly_pts(p_size):
 	vlog("off: ", off)
 	for i in range(num_sides):
 		pts.append(off + polar2cartesian(p_size, deg2rad(-90+polygon_rotation) + i*th))
+#	print(pts)
+	polygon_points_set(pts)
 	return pts
 
 func draw_poly(p_size, p_color, p_texture):
@@ -149,6 +155,13 @@ func size_set(s):
 func size_get():
 	return size
 
+func polygon_points_set(p):	# mine
+	polygon_pts = p
+	update()
+
+func polygon_points_get():	# mine
+	return polygon_pts
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pass
