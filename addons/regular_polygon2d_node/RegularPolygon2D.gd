@@ -1,6 +1,7 @@
 tool
 extends Node2D
 class_name RegularPolygon2D
+# still shows as "Node2D" in the scene tree
 
 
 export(bool) var centered setget centered_set, centered_get
@@ -16,7 +17,7 @@ export(Color) var border_color = Color(0,0,0) setget border_color_set, border_co
 
 export(float, -360, 360) var polygon_rotation setget polygon_rotation_set, polygon_rotation_get
 
-export(PoolVector2Array) var polygon_pts = [] setget polygon_points_set, polygon_points_get # mine and damn do i feel slick. first export() ever
+export(PoolVector2Array) var polygon_points = [] setget polygon_points_set, polygon_points_get
 
 # Configure a collision shape if the parent is a CollisionObject2D.
 # e.g. KinematicBody2D, RigidyBody2D, Area2D, or StaticBody2D
@@ -26,7 +27,7 @@ var DEBUG_NONE = -9999
 var DEBUG_INFO = 0
 var DEBUG_VERBOSE = 1
 
-var LOG_LEVEL = DEBUG_NONE
+var LOG_LEVEL = -9999
 
 func vlog(arg1, arg2 = "", arg3 = ""):
 	if LOG_LEVEL >= DEBUG_VERBOSE:
@@ -49,7 +50,10 @@ func poly_pts(p_size):
 	vlog("off: ", off)
 	for i in range(num_sides):
 		pts.append(off + polar2cartesian(p_size, deg2rad(-90+polygon_rotation) + i*th))
-#	print(pts)
+
+	if LOG_LEVEL > DEBUG_NONE:
+		print("RP2D.poly_pts(): <pts>: %s" % pts)
+
 	polygon_points_set(pts)
 	return pts
 
@@ -156,11 +160,25 @@ func size_get():
 	return size
 
 func polygon_points_set(p):	# mine
-	polygon_pts = p
+	if LOG_LEVEL > DEBUG_NONE:
+		print("calling polygon_points_set(%s)" % p)
+	
+	polygon_points = p
 	update()
 
 func polygon_points_get():	# mine
-	return polygon_pts
+	return polygon_points
+
+func get_class():
+	return 'RegularPolygon2D'
+	# still shows as "Node2D" in the scene tree
+
+func is_class(string):
+	if self.get_class() == string: return true
+	else: return false
+
+func _draw():
+	self._notification(NOTIFICATION_DRAW)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
